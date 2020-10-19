@@ -22,12 +22,12 @@ def evaluate(net, criterion, epoch, eval_losses, validation, test_loss_log_file,
     if cuda_available:
         validation = validation.cuda(async=True)
 
-    target = Variable(validation.view(-1), volatile=True)
+    target = Variable(validation, volatile=True)
     validation = Variable(validation, volatile=True)
 
     output = net(validation)
     loss = criterion(output, target)
-    total += loss.data[0]
+    total += loss.data
 
     avg_loss = total / valid_num_samples
 
@@ -51,20 +51,20 @@ def train(net, criterion, optimizer, train_losses, train_params, train_loss_log_
         if cuda_available:
             music_spec = music_spec.cuda(async=True)
 
-        target_spec = Variable(music_spec.view(-1))
+        target_spec = Variable(music_spec)
         music_spec = Variable(music_spec)
 
         outputs = net(music_spec)
         loss = criterion(outputs,target_spec)
         loss.backward()
         
-        if check_grad(net.parameters(), train_params['clip_grad'], train_params['ignore_grad']):
-            print('Not a finite gradient or too big, ignoring.')
-            optimizer.zero_grad()
-            continue
+        #if check_grad(net.parameters(), train_params['clip_grad'], train_params['ignore_grad']):
+        #    print('Not a finite gradient or too big, ignoring.')
+        #    optimizer.zero_grad()
+        #    continue
 
         optimizer.step()
-        total_loss += loss.data[0]
+        total_loss += loss.data
         num_trained += 1
 
         if num_trained % train_params['print_every'] == 0:

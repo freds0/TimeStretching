@@ -124,7 +124,9 @@ def mu_law_decode(output, quantization_channels = 256):
 
 def check_grad(params, clip_th, ignore_th):
     befgad = torch.nn.utils.clip_grad_norm(params, clip_th)
-    return (not np.isfinite(befgad) or (befgad > ignore_th))
+    #return (not np.isfinite(befgad) or (befgad > ignore_th))
+    return (not torch.isinf(befgad) or (befgad > ignore_th))
+
 
 def timestretch(encoding, factor):
     

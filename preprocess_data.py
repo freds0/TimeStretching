@@ -44,7 +44,7 @@ def wav_to_ndarray(audio_dir, ndarray_dir, window_length):
         
 
 def preprocess(audio_dir, ndarray_dir , window_length):
-    pattern = audio_dir + '*' + '.wav'
+    pattern = audio_dir + '/*' + '.wav'
     file_list = glob.glob(pattern)
 
     for item in file_list:
@@ -70,4 +70,5 @@ def preprocess(audio_dir, ndarray_dir , window_length):
 
 if __name__ == '__main__':
     #wav_to_ndarray('./data/fma_small_wav/', './data/fma_small_not_encoded_split/', audio.hparams["window_length"])
-    preprocess('./data/fma_small_wav/', './data/fma_small_preprocess/' , audio.hparams["window_length"])
+    #preprocess('./data/fma_small_wav/', './data/fma_small_preprocess/' , audio.hparams["window_length"])
+    preprocess('./input/', './data/fma_small_preprocess/' , audio.hparams["window_length"])
